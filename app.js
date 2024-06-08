@@ -16,9 +16,7 @@ app.set('view engine', 'ejs');
 
 
 
-app.get('', (req,res) => {
-    res.send("HELLO WORLD");
-});
+app.use('/',require('./server/routes/main'));
 
 app.listen(PORT, () => {
     console.log(`App Listening on Port ${PORT}`);
