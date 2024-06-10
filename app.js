@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-//? Templating Engine
+//? Template Engine
 
 app.use(expressLayout);
 app.set('layout', './layouts/main');
