@@ -3,6 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const expressLayout = require('express-ejs-layouts');
 const { connect } = require('mongoose');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const connectDB = require('./server/config/db');
 
@@ -14,6 +17,19 @@ const PORT = 5000 || process.env.PORT;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
+
+app.use(cookieParser());
+
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://goyalmoney95:hI3UA69wbxff2NDk@cluster0.ex5u5nz.mongodb.net/blog'
+  }),
+  //cookie: { maxAge: new Date ( Date.now() + (3600000) ) } 
+}));
 
 //? Template Engine
 
