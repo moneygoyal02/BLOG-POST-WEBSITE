@@ -50,12 +50,33 @@ router.post('/register', async (req, res) => {
 });
 
 
+/**
+ * 
+ * Check Login
+*/
+const authMiddleware = (req, res, next ) => {
+  const token = req.cookies.token;
+
+  if(!token) {
+    return res.status(401).json( { message: 'Unauthorized'} );
+  }
+
+  try {
+    const decoded = jwt.verify(token, 'my blog');  // here my blog is jwt secret 
+    req.userId = decoded.userId;
+    next();
+  } catch(error) {
+    res.status(401).json( { message: 'Unauthorized'} );
+  }
+}
+
+
 
 /**
  * POST /
  * Admin - Check Login
 */
-router.post('/admin', async (req, res) => {
+router.post('/admin',  async (req, res) => {
   try {
     const { username, password } = req.body;
     
@@ -85,7 +106,7 @@ router.post('/admin', async (req, res) => {
  * GET /
  * Admin Dashboard
 */
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', authMiddleware,async (req, res) => {
   
 
     
