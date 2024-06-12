@@ -3,9 +3,11 @@ require('dotenv').config();
 const express = require('express');
 const expressLayout = require('express-ejs-layouts');
 const { connect } = require('mongoose');
+const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const { isActiveRoute } = require('./server/helpers/routeHelper');
 
 const connectDB = require('./server/config/db');
 
@@ -17,9 +19,10 @@ const PORT = 5000 || process.env.PORT;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
+app.use(methodOverride('_method'));
 
 app.use(cookieParser());
-
+app.locals.isActiveRoute = isActiveRoute; 
 
 app.use(session({
   secret: 'keyboard cat',
